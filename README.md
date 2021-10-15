@@ -2,7 +2,7 @@
 
 ## 📔 ADF Innovative Assignment
 
-Submitted by: \
+Submitted by:
 
 - Ayush Zaveri (18BCE021)
 - Yash Brahmkshatriya (18BCE029)
