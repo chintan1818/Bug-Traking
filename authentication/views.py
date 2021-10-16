@@ -16,7 +16,7 @@ def signin(request):
 
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            return redirect('project:dashboard')
         else:
             messages.error(request, 'Invalid Credentials!')
             return redirect('auth:signin')

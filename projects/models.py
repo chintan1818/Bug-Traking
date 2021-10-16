@@ -2,12 +2,15 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class TimeStamps:
+class TimeStamps(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        abstract = True
 
-class Project(TimeStamps, models.Model):
+
+class Project(TimeStamps):
     name = models.CharField(max_length=128, null=False)
     description = models.CharField(max_length=1024)
     manager = models.OneToOneField(
@@ -19,7 +22,7 @@ class Project(TimeStamps, models.Model):
         return self.name
 
 
-class Thread(TimeStamps, models.Model):
+class Thread(TimeStamps):
     BUG_TYPE_CHOICES = (('bug', 'Bug'), ('query', 'Query'))
     BUG_PRIORITY_CHOICES = (
         ('critical', 'Critical'),
@@ -44,7 +47,7 @@ class Thread(TimeStamps, models.Model):
         return self.title
 
 
-class Comment(TimeStamps, models.Model):
+class Comment(TimeStamps):
     ROLE_CHOICES = (
         ('contributor', 'Contributor'),
         ('developer', 'Developer'),
