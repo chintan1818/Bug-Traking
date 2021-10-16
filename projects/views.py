@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *
+from django.views.generic import DetailView
 
 
 def getProjectsAsManager(user_id):
@@ -15,7 +16,6 @@ def getProjectsAsDeveloper(user_id):
 def getProjectsAsReporter(user_id):
     p_ids = set(Thread.objects.filter(
         reporter__id=user_id).values_list('project__id', flat=True))
-    print(p_ids)
     return list(set(Project.objects.filter(
         pk__in=p_ids).order_by('-created')))
 
@@ -26,9 +26,6 @@ def projectDashboard(request):
     pm = getProjectsAsManager(user_id)
     pd = getProjectsAsDeveloper(user_id)
     pr = getProjectsAsReporter(user_id)
-    print('As Manager:', pm)
-    print('As Developer:', pd)
-    print('As Reporter:', pr)
     projects = {
         "pm": pm, "pd": pd, "pr": pr
     }
@@ -37,3 +34,9 @@ def projectDashboard(request):
 
 def explore(request):
     return render(request, 'explore.html')
+
+
+class ProjectDetail(DetailView):
+    model = Project
+    template_name = 'project_detail.html'
+    context_object_name = 'project'

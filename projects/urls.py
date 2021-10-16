@@ -9,5 +9,6 @@ def withLogin(view, login_url='/auth/signin'):
 
 urlpatterns = [
     path('', withLogin(projectDashboard), name='dashboard'),
-    path('explore', explore, name='explore')
+    path('explore', explore, name='explore'),
+    path('<int:pk>/', ProjectDetail.as_view(), name='project_details')
 ]

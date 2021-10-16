@@ -18,6 +18,9 @@ class Project(TimeStamps):
     developers = models.ManyToManyField(User, related_name='developers')
     tags = models.CharField(max_length=1024)
 
+    def tags_as_list(self):
+        return self.tags.split(',')
+
     def __str__(self):
         return self.name
 

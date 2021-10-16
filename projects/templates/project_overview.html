@@ -1,0 +1,21 @@
+<div class="mb-4 rounded shadow-sm card">
+  <div class="card-header d-flex justify-content-between align-items-center w-100">
+    <a href="{% url 'project:project_details' project.id %}">
+      <h3 class="m-0">{{project.name}}</h3>
+    </a>
+    <p class="m-0">{{project.created}}</p>
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+      {{project.description}}
+    </p>
+    <p class="card-text">
+      {{project.manager.name}}
+    </p>
+    <p class="card-text">
+      {% for tag in project.tags_as_list %}
+        <a href="#" class="p-2 mr-1 badge badge-info">{{tag}}</a>
+      {% endfor %}
+    </p>
+  </div>
+</div>
