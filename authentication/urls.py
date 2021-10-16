@@ -5,5 +5,5 @@ urlpatterns = [
     path('signin/', signin, name='signin'),
     path('signup/', signup, name='signup'),
     path('activate/<uidb64>/<token>', activate, name='activate'),
-    # path('signout/', name='signout')
+    path('signout/', name='signout')
 ]

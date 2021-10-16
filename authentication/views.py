@@ -54,3 +54,9 @@ def activate(request, uidb64, token):
         messages.success(
             request, "Congrats! Your account has been activated. Signin to continue.")
         return redirect('auth:signin')
+
+
+def signout(request):
+    logout(request)
+    messages.success(request, 'Logged out Successfully!')
+    return redirect('home')
