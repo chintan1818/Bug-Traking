@@ -1,0 +1,10 @@
+{% autoescape off %}
+
+Welcome to Bug Tracker !
+Hi, {{username}} !
+Please confirm your email by clicking on the following link:
+
+Email Confirmation Link: <br/>
+http://{{ domain }}{% url 'auth:activate' uidb64=uid token=token %}
+
+{% endautoescape %}

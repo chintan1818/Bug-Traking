@@ -13,12 +13,18 @@
   {% block nav %}
     {% include 'nav.html' %}
   {% endblock nav %}
-
-  {% block content %}
-  {% endblock content %}
+    {% include 'messages.html' with messages=messages %}
+  {% block messages %}
+    
+  {% endblock %}
+  <div class="container p-3 my-1">
+    {% block content %}
+    {% endblock content %}
+  </div>
 
   {% block footer %}
   {% endblock footer %}
 </body>
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 </html>
