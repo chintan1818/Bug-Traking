@@ -11,7 +11,7 @@
   {% block title %}
   {% endblock title %}
 </head>
-<body>
+<body class="d-flex flex-column" style="min-height:100vh;">
   {% block nav %}
     {% include 'nav.html' %}
   {% endblock nav %}
@@ -19,7 +19,7 @@
   {% block messages %}
     
   {% endblock %}
-  <div class="container py-4">
+  <div class="container py-4 flex-fill">
     {% block content %}
     {% endblock content %}
   </div>

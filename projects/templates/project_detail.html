@@ -10,14 +10,14 @@
         <h4 class="card-text flex-fill">
           {{project.name}}
         </h4>
-        <a href="#" class="ml-2 p-1 text-dark" data-toggle="tooltip" data-placement="bottom" title="Threads">
+        <a href="#" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Threads">
           <i class="bi bi-collection-fill"></i>
         </a>
         {% if isManager %}
-            <a class="ml-2 p-1 text-dark" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+            <a class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
               <i class="bi bi-pencil-fill"></i>
             </a>
-            <a class="ml-2 p-1 text-dark" data-toggle="tooltip" data-placement="bottom" title="Delete Project">
+            <a class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Project">
               <i class="bi bi-trash-fill"></i>
             </a>
         {% endif %}
@@ -28,7 +28,7 @@
       </p>
       <p class="card-text">
       {% for tag in project.tags_as_list %}
-        <a href="#" class="p-2 mr-1 badge badge-info">{{tag}}</a>
+        <a href="#" class="px-3 py-2 me-1 badge rounded-pill bg-primary text-white text-decoration-none">{{tag}}</a>
       {% endfor %}
     </p>
     </div>
