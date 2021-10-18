@@ -45,3 +45,26 @@ class ProjectDetail(DetailView):
         ctx = super().get_context_data(**kwargs)
         pr = ctx['project']
         return ctx
+
+def ThreadList(request,pk):
+    threads=list(Thread.objects.filter(
+        project__id=pk).order_by('-created'))
+    print(threads)
+    return render(request,'thread_list.html',context={"threads":threads})
+
+class ThreadDetail(DetailView):
+    model = Thread
+    template_name = 'thread_details.html'
+    context_object_name = 'thread'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['comments']=list(Comment.objects.filter(
+        thread__id=ctx['thread'].id).order_by('-created'))
+        return ctx
+
+def CommentList(request,pk):
+    comments=list(Comment.objects.filter(
+        thread__id=pk).order_by('-created'))
+    print(comments)
+    return render(request,'comment_list.html',context={"comments":comments})

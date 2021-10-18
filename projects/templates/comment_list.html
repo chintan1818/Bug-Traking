@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="tab-pane fade show active"
+  id="manager"
+  role="tabpanel"
+  aria-labelledby="manager-tab"
+>
+  {% for comment in comments%} 
+    {% include 'comment_overview.html' with comment=comment%} 
+    {% empty %}
+        <p>Nothing to show</p>
+  {% endfor %}
+</div>
+{% endblock content %}
