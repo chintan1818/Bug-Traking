@@ -1,9 +1,9 @@
 <div class="mb-4 rounded shadow-sm card">
   <div class="card-header d-flex justify-content-between align-items-center w-100">
     <a href="{% url 'project:project_details' project.id %}">
-      <h3 class="m-0">{{project.name}}</h3>
+      <h4 class="m-0">{{project.name}}</h4>
     </a>
-    <p class="m-0">{{project.created}}</p>
+    <p class="m-0 font-italic">{{project.created|timesince}} ago</p>
   </div>
   <div class="card-body">
     <p class="card-text">

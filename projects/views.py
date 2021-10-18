@@ -40,3 +40,8 @@ class ProjectDetail(DetailView):
     model = Project
     template_name = 'project_detail.html'
     context_object_name = 'project'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        pr = ctx['project']
+        return ctx

@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
-
+{% load tz %}
 {% block content %}
-  Project
+  <div class="card rounded mb-4 shadow">
+    <div class="card-body">
+      <h4 class="card-text">
+        {{project.name}}
+      </h4>
+      <p class="card-text">{{project.description}}</p>
+      <p class="card-text">
+        {{project.manager.first_name}} {{project.manager.last_name}} | {{project.created|localtime}}
+      </p>
+      <p class="card-text">
+      {% for tag in project.tags_as_list %}
+        <a href="#" class="p-2 mr-1 badge badge-info">{{tag}}</a>
+      {% endfor %}
+    </p>
+    </div>
+  </div>
 {% endblock content %}
