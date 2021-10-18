@@ -12,11 +12,11 @@ class TimeStamps(models.Model):
 
 class Project(TimeStamps):
     name = models.CharField(max_length=128, null=False)
-    description = models.CharField(max_length=1024)
+    description = models.TextField()
     manager = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='manager')
     developers = models.ManyToManyField(User, related_name='developers')
-    tags = models.CharField(max_length=1024)
+    tags = models.TextField()
 
     def tags_as_list(self):
         return self.tags.split(',')
@@ -39,7 +39,7 @@ class Thread(TimeStamps):
     bug_type = models.CharField(
         max_length=20, choices=BUG_TYPE_CHOICES, default='bug')
     title = models.CharField(max_length=256)
-    description = models.CharField(max_length=1024)
+    description = models.TextField()
     reporter = models.ForeignKey(User, on_delete=models.CASCADE)
     bug_priority = models.CharField(max_length=20,
                                     choices=BUG_PRIORITY_CHOICES, default='low')
@@ -56,7 +56,7 @@ class Comment(TimeStamps):
         ('developer', 'Developer'),
         ('project_manager', 'Project Manager'),
     )
-    body = models.CharField(max_length=1024)
+    body = models.TextField()
     author = models.OneToOneField(User, on_delete=models.CASCADE)
     author_role = models.CharField(
         max_length=20, choices=ROLE_CHOICES, default='contributor')

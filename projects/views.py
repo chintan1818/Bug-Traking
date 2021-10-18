@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import *
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView
+from projects.forms import ProjectForm
+from django.urls import reverse_lazy
 
 
 def getProjectsAsManager(user_id):
@@ -46,6 +48,17 @@ class ProjectDetail(DetailView):
         pr = ctx['project']
         ctx['isManager'] = pr.manager.id == self.request.user.id
         return ctx
+
+
+class ProjectEdit(UpdateView):
+    model = Project
+    template_name = 'project_edit.html'
+    form_class = ProjectForm
+    context_object_name = 'project'
+
+    def get_success_url(self):
+        project_id = self.kwargs['pk']
+        return reverse_lazy('project:project_details', kwargs={'pk': project_id})
 
 
 def ThreadList(request, projectId):

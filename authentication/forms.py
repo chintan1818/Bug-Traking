@@ -11,18 +11,18 @@ class SignUpForm(UserCreationForm):
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Row(
-                Column('first_name', css_class='form-group col-md-6 mb-0'),
-                Column('last_name', css_class='form-group col-md-6 mb-0'),
+                Column('first_name', css_class='col-md-6 mb-0'),
+                Column('last_name', css_class='col-md-6 mb-0'),
                 css_class='form-row'
             ),
             Row(
-                Column('username', css_class='form-group col-md-4 mb-0'),
-                Column('email', css_class='form-group col-md-8 mb-0'),
+                Column('username', css_class='col-md-4 mb-0'),
+                Column('email', css_class='col-md-8 mb-0'),
                 css_class='form-row'
             ),
             Row(
-                Column('password1', css_class='form-group col-md-6 mb-0'),
-                Column('password2', css_class='form-group col-md-6 mb-0'),
+                Column('password1', css_class='col-md-6 mb-0'),
+                Column('password2', css_class='col-md-6 mb-0'),
                 css_class='form-row'
             ),
             Submit('submit', 'Sign up')

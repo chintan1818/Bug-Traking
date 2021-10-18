@@ -11,6 +11,7 @@ urlpatterns = [
     path('', withLogin(projectDashboard), name='dashboard'),
     path('explore', explore, name='explore'),
     path('<int:pk>/', ProjectDetail.as_view(), name='project_details'),
+    path('<int:pk>/edit', ProjectEdit.as_view(), name='project_edit'),
     path('<int:projectId>/threads', ThreadList, name='thread_list'),
     path('<int:projectId>/threads/<int:pk>',
          ThreadDetail.as_view(), name='thread_details'),
