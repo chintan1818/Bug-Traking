@@ -1,0 +1,25 @@
+<ul class="list-group shadow">
+  <li class="list-group-item"> 
+  <h5>Developers</h5>
+  </li>
+  {% for dev in developers %}
+    <li class="list-group-item">
+      <div class="d-flex align-items-center">
+        <div class="rounded-circle {% if forloop.counter|divisibleby:2 %} bg-primary {% else %} bg-dark {% endif %} text-white me-4 text-center" style="width:48px;height:48px;">
+          <div class="position-relative" style="font-size:24px; top:12px;line-height:1">
+            {{dev.first_name|make_list|first|upper}}{{dev.last_name|make_list|first|upper}}
+          </div>
+        </div>
+        <div class="flex-fill p-1">
+          <h6>{{dev.first_name}} {{dev.last_name}}</h6>
+          {{dev.email}}
+        </div>
+        {% if isManager %}
+          <a class="ms-2 p-1 link-secondary">
+            <i class="bi bi-trash-fill"></i>
+          </a>
+        {% endif %}
+      </div>
+    </li>
+  {% endfor %}
+</ul>

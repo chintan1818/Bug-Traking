@@ -44,6 +44,7 @@ class ProjectDetail(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         pr = ctx['project']
+        ctx['isManager'] = pr.manager.id == self.request.user.id
         return ctx
 
 def ThreadList(request,pk):
