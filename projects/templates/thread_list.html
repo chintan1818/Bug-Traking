@@ -1,14 +1,11 @@
-{% extends 'base.html' %} {% block content %}
-<div
-  class="tab-pane fade show active"
-  id="manager"
-  role="tabpanel"
-  aria-labelledby="manager-tab"
->
+{% extends 'base.html' %} 
+{% block content %}
+{% include 'project_overview.html' with project=project %}
+
+<h4 class="mt-5">Threads</h4>
   {% for thread in threads %} 
     {% include 'thread_overview.html' with thread=thread%} 
     {% empty %}
         <p>Nothing to show</p>
   {% endfor %}
-</div>
 {% endblock content %}

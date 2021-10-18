@@ -10,7 +10,7 @@
         <h4 class="card-text flex-fill">
           {{project.name}}
         </h4>
-        <a href="#" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Threads">
+        <a href="{% url 'project:thread_list' projectId=project.id %}" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Threads">
           <i class="bi bi-collection-fill"></i>
         </a>
         {% if isManager %}
