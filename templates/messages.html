@@ -1,8 +1,12 @@
-{% for message in messages %}
-<div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
-  {{message}}
-  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true"> &times; </span>
-  </button>
+<div class="toast-container position-absolute p-3 bottom-0 end-0">
+  {% for message in messages %}
+    <div class="toast fade show align-items-center border-0 bg-primary {% if message.tags == 'error' %} bg-danger {% else %} bg-{{message.tags}} {% endif %} text-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          {{message}}
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  {% endfor %}
 </div>
-{% endfor %}

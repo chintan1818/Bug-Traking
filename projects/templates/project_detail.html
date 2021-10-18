@@ -1,20 +1,37 @@
 {% extends 'base.html' %}
 {% load tz %}
+{% block title %}
+  <title>Project - {{project}}</title>
+{% endblock title %}
 {% block content %}
   <div class="card rounded mb-4 shadow">
     <div class="card-body">
-      <h4 class="card-text">
-        {{project.name}}
-      </h4>
+      <div class="d-flex align-items-center justify-space-between">
+        <h4 class="card-text flex-fill">
+          {{project.name}}
+        </h4>
+        <a href="#" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Threads">
+          <i class="bi bi-collection-fill"></i>
+        </a>
+        {% if isManager %}
+            <a class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+              <i class="bi bi-pencil-fill"></i>
+            </a>
+            <a class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Project">
+              <i class="bi bi-trash-fill"></i>
+            </a>
+        {% endif %}
+      </div>
       <p class="card-text">{{project.description}}</p>
       <p class="card-text">
         {{project.manager.first_name}} {{project.manager.last_name}} | {{project.created|localtime}}
       </p>
       <p class="card-text">
       {% for tag in project.tags_as_list %}
-        <a href="#" class="p-2 mr-1 badge badge-info">{{tag}}</a>
+        <a href="#" class="px-3 py-2 me-1 badge rounded-pill bg-primary text-white text-decoration-none">{{tag}}</a>
       {% endfor %}
     </p>
     </div>
   </div>
+  {% include 'developer_details.html' with developers=project.developers.all isManager=isManager %}
 {% endblock content %}
