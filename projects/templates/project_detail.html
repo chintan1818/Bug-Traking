@@ -31,6 +31,7 @@
         <a href="#" class="px-3 py-2 me-1 badge rounded-pill bg-primary text-white text-decoration-none">{{tag}}</a>
       {% endfor %}
     </p>
+    </div>
   </div>
   {% include 'developer_details.html' with developers=project.developers.all isManager=isManager %}
 {% endblock content %}
