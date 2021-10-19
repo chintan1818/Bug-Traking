@@ -9,12 +9,10 @@
         {{thread.title}}
       </h4>
       {% if thread.reporter.id == user.id %}
-        <a class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
-          <i class="bi bi-pencil-fill"></i>
-        </a>
-        <a class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Project">
-          <i class="bi bi-trash-fill"></i>
-        </a>
+      <a href="" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Thread" data-bs-toggle="modal" data-bs-target="#deleteThreadModal">
+        <i class="bi bi-trash-fill"></i>
+      </a>
+      {% include 'thread_delete.html' with thread=thread project=project %}
       {% endif %}
     </div>
     <p class="card-text">{{thread.description}}</p>

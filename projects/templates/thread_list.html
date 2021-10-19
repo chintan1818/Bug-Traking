@@ -1,10 +1,14 @@
 {% extends 'base.html' %} 
 {% block content %}
 {% include 'project_overview.html' with project=project %}
-
-<h4 class="mt-5">Threads</h4>
+<div class="d-flex justify-content-between">
+  <h4 class="mt-5">Threads</h4>
+<a href="{% url 'project:thread_create' project.id %}" class="ms-2 mt-5 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Threads">
+  <i class="bi bi-plus-square mt-10"></i>
+</a> 
+</div>
   {% for thread in threads %} 
-    {% include 'thread_overview.html' with thread=thread%} 
+    {% include 'thread_overview.html' with thread=thread project=project%} 
     {% empty %}
         <p>Nothing to show</p>
   {% endfor %}

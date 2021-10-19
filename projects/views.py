@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from .models import *
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
-from projects.forms import ProjectForm
+from projects.forms import ProjectForm, ThreadForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 
@@ -88,13 +88,50 @@ class ProjectEdit(UpdateView):
 
 
 def ThreadList(request, projectId):
+    # print("entered")
     threads = list(Thread.objects.filter(
         project__id=projectId).order_by('-created'))
-    print(threads)
+    # print(threads)
     project = Project.objects.get(id=projectId)
     return render(request, 'thread_list.html', context={"threads": threads, "project": project})
 
+def threadDelete(request, pk , projectId):
+    try:
+        Thread.objects.get(pk=pk).delete()
+        messages.success(request, 'Thread Deleted Successfully')
+    except Thread.DoesNotExist:
+        messages.error(
+            request, 'Requested thread not found! Cannot be deleted')
+    except (ValueError, TypeError, OverflowError):
+        messages.error(request, 'Some error occurred while deleting!')
+    finally:
+        return redirect('project:thread_list',projectId=projectId)
 
+
+class ThreadCreate(CreateView):
+    
+       
+    model = Thread
+    template_name = 'thread_create.html'
+    form_class = ThreadForm
+    def get_success_url(self):
+        projectId = self.kwargs['projectId']
+        return reverse_lazy('project:thread_list', kwargs={'projectId': projectId})
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'reporter': self.request.user,'projectId': self.kwargs['projectId']})
+        return kwargs
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['projectId']=self.kwargs['projectId']
+        print(ctx['projectId'])
+        return ctx
+    
+
+
+
+        
 class ThreadDetail(DetailView):
     model = Thread
     template_name = 'thread_details.html'
@@ -102,6 +139,8 @@ class ThreadDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+        project = Project.objects.get(id=self.kwargs['projectId'])
+        ctx['project']=project
         ctx['comments'] = list(Comment.objects.filter(
             thread__id=ctx['thread'].id).order_by('-created'))
         return ctx
