@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, CreateView
 from projects.forms import ProjectForm
 from django.urls import reverse_lazy
 
@@ -48,6 +48,18 @@ class ProjectDetail(DetailView):
         pr = ctx['project']
         ctx['isManager'] = pr.manager.id == self.request.user.id
         return ctx
+
+
+class ProjectCreate(CreateView):
+    model = Project
+    template_name = 'project_create.html'
+    form_class = ProjectForm
+    success_url = reverse_lazy('project:dashboard')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class ProjectEdit(UpdateView):
