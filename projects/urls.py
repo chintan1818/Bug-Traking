@@ -13,6 +13,7 @@ urlpatterns = [
     path('create', withLogin(ProjectCreate.as_view()), name='create'),
     path('<int:pk>/', ProjectDetail.as_view(), name='project_details'),
     path('<int:pk>/edit', withLogin(ProjectEdit.as_view()), name='project_edit'),
+    path('<int:pk>/delete', withLogin(projectDelete), name='project_delete'),
     path('<int:projectId>/threads', ThreadList, name='thread_list'),
     path('<int:projectId>/threads/<int:pk>',
          ThreadDetail.as_view(), name='thread_details'),

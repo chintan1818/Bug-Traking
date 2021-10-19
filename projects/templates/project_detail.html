@@ -17,9 +17,10 @@
             <a href="{% url 'project:project_edit' pk=project.id %}" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
               <i class="bi bi-pencil-fill"></i>
             </a>
-            <a class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Project">
+            <a href="" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Project" data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
               <i class="bi bi-trash-fill"></i>
             </a>
+            {% include 'project_delete.html' with project=project %}
         {% endif %}
       </div>
       <p class="card-text">{{project.description}}</p>

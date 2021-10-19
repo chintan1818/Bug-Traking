@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import *
-from django.views.generic import DetailView, UpdateView, CreateView
+from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
 from projects.forms import ProjectForm
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 
 def getProjectsAsManager(user_id):
@@ -48,6 +49,19 @@ class ProjectDetail(DetailView):
         pr = ctx['project']
         ctx['isManager'] = pr.manager.id == self.request.user.id
         return ctx
+
+
+def projectDelete(request, pk):
+    try:
+        Project.objects.get(pk=pk).delete()
+        messages.success(request, 'Project Deleted Successfully')
+    except Project.DoesNotExist:
+        messages.error(
+            request, 'Requested project not found! Cannot be deleted')
+    except (ValueError, TypeError, OverflowError):
+        messages.error(request, 'Some error occurred while deleting!')
+    finally:
+        return redirect('project:dashboard')
 
 
 class ProjectCreate(CreateView):
