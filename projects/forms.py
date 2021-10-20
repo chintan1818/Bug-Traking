@@ -39,7 +39,7 @@ class ThreadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         if kwargs.get('reporter') != None:
             self.reporter = kwargs.pop('reporter')
-        self.project_id=kwargs.pop('projectId')
+        self.project_id= kwargs.pop('projectId')
         super().__init__(*args, **kwargs)
     
     class Meta:

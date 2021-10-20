@@ -20,5 +20,6 @@ urlpatterns = [
     path('<int:projectId>/threads/<int:pk>/comments',
          CommentList, name='comment_list'),
     path('<int:projectId>/threads/create',withLogin(ThreadCreate.as_view()),name='thread_create'),
-    path('<int:projectId>/threads/<int:pk>/delete',withLogin(threadDelete),name='thread_delete')
+    path('<int:projectId>/threads/<int:pk>/delete',withLogin(threadDelete),name='thread_delete'),
+    path('<int:projectId>/threads/<int:pk>/edit',withLogin(ThreadEdit.as_view()),name='thread_edit')
 ]

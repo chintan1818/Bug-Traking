@@ -145,6 +145,27 @@ class ThreadDetail(DetailView):
             thread__id=ctx['thread'].id).order_by('-created'))
         return ctx
 
+class ThreadEdit(UpdateView):
+    model = Thread
+    template_name = 'thread_edit.html'
+    form_class = ThreadForm
+    context_object_name = 'thread'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'projectId': self.kwargs['projectId']})
+        return kwargs
+
+    def get_success_url(self):
+        pk= self.kwargs['pk']
+        return reverse_lazy('project:thread_details', kwargs={'pk': pk,'projectId': self.kwargs['projectId']})
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['projectId']=self.kwargs['projectId']
+        self.projectId = self.kwargs['projectId']
+        ctx['pk'] = self.kwargs['pk']
+        return ctx
 
 def CommentList(request, pk):
     comments = list(Comment.objects.filter(
