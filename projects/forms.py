@@ -71,3 +71,34 @@ class ThreadForm(forms.ModelForm):
         # To save many to many field, we have to call save_m2m
         self.save_m2m()
         return thread
+
+class CommentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        if kwargs.get('author') != None:
+            self.author = kwargs.pop('author')
+        self.thread_id= kwargs.pop('threadId')
+        super().__init__(*args, **kwargs)
+    
+    class Meta:
+        model = Comment
+        fields = ['body','author_role']
+        widgets = {
+            'body': forms.widgets.Textarea(attrs={'rows': 5})
+        }
+    ROLE_CHOICES = (
+        ('contributor', 'Contributor'),
+        ('developer', 'Developer'),
+        ('project_manager', 'Project Manager'),
+    )
+    author_role=forms.ChoiceField(choices=ROLE_CHOICES)
+    def save(self, commit=True):
+        comment = super().save(commit=False)
+        if not hasattr(comment, 'author'):
+            comment.author = self.author
+        thread = Thread.objects.get(id=self.thread_id)
+        comment.thread=thread
+        comment.save()
+
+        # To save many to many field, we have to call save_m2m
+        self.save_m2m()
+        return comment

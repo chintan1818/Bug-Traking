@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from .models import *
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
-from projects.forms import ProjectForm, ThreadForm
+from projects.forms import ProjectForm, ThreadForm,CommentForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 
@@ -108,9 +108,7 @@ def threadDelete(request, pk , projectId):
         return redirect('project:thread_list',projectId=projectId)
 
 
-class ThreadCreate(CreateView):
-    
-       
+class ThreadCreate(CreateView):  
     model = Thread
     template_name = 'thread_create.html'
     form_class = ThreadForm
@@ -125,13 +123,8 @@ class ThreadCreate(CreateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['projectId']=self.kwargs['projectId']
-        print(ctx['projectId'])
         return ctx
-    
-
-
-
-        
+            
 class ThreadDetail(DetailView):
     model = Thread
     template_name = 'thread_details.html'
@@ -170,5 +163,37 @@ class ThreadEdit(UpdateView):
 def CommentList(request, pk):
     comments = list(Comment.objects.filter(
         thread__id=pk).order_by('-created'))
-    print(comments)
     return render(request, 'comment_list.html', context={"comments": comments})
+
+
+class CommentCreate(CreateView):  
+    model = Comment
+    template_name = 'comment_create.html'
+    form_class = CommentForm
+    def get_success_url(self):
+        projectId = self.kwargs['projectId']
+        pk=self.kwargs['pk']
+        return reverse_lazy('project:thread_details', kwargs={'projectId': projectId,'pk':pk})
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'author': self.request.user,'threadId': self.kwargs['pk']})
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['projectId']=self.kwargs['projectId']
+        ctx['pk']=self.kwargs['pk']
+        return ctx
+
+def commentDelete(request, commentId, pk , projectId):
+    try:
+        Comment.objects.get(pk=commentId).delete()
+        messages.success(request, 'Comment Deleted Successfully')
+    except Comment.DoesNotExist:
+        messages.error(
+            request, 'Requested comment not found! Cannot be deleted')
+    except (ValueError, TypeError, OverflowError):
+        messages.error(request, 'Some error occurred while deleting!')
+    finally:
+        return redirect('project:thread_details',projectId=projectId,pk=pk)

@@ -41,14 +41,17 @@
   aria-labelledby="manager-tab"
 >
 <div class="card">
-    <div class="card-header">
+    <div class="d-flex justify-content-between card-header">
     <h5 class="ml-1.5">
         Comments
     </h5>
+    <a href="{% url 'project:comment_create' projectId=project.id  pk=thread.id%}" class="ms-2  p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Threads">
+  <i class="bi bi-plus-square"></i>
+  </a> 
     </div>
     <div class="card-body">
         {% for comment in comments%} 
-        {% include 'comment_overview.html' with comment=comment%} 
+        {% include 'comment_overview.html' with comment=comment project=project thread=thread%} 
         {% empty %}
             <p>Nothing to show</p>
       {% endfor %}

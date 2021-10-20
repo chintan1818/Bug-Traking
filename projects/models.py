@@ -62,5 +62,5 @@ class Comment(TimeStamps):
         max_length=20, choices=ROLE_CHOICES, default='contributor')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.author + ':' + self.body
+    # def __str__(self):
+    #     return self.author + ':' + self.body
