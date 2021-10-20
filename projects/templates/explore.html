@@ -1,4 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-  Explore
+<form method="post">
+  {% csrf_token %}
+  <div class="input-group mb-4">
+    <input type="text" class="form-control" placeholder="Project name or tag" aria-label="Project name or tag" name="searchString">
+    <button class="btn btn-outline-secondary" type="submit" id="button-search">
+      <i class="bi bi-search"></i>
+    </button>
+  </div>
+</form>
+{% for project in projects %}
+  {% include 'project_overview.html' with project=project %}
+{% empty %}
+  <h5 class="text-center text-muted">Nothing to show</h5>
+{% endfor %}
 {% endblock content %}

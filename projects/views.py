@@ -1,9 +1,10 @@
 from django.shortcuts import redirect, render
 from .models import *
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
-from projects.forms import ProjectForm, ThreadForm,CommentForm
-from django.urls import reverse_lazy
+from projects.forms import ProjectForm, ThreadForm, CommentForm
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
+from django.db.models import Q
 
 
 def getProjectsAsManager(user_id):
@@ -36,7 +37,29 @@ def projectDashboard(request):
 
 
 def explore(request):
-    return render(request, 'explore.html')
+    if request.method == 'POST':
+        searchString = request.POST.get('searchString', '')
+        searchString = str(searchString.strip())
+        url_with_query = reverse('project:explore')
+        if len(searchString) > 0:
+            url_with_query += '?query='+searchString
+        return redirect(url_with_query)
+    projects = []
+    kwargs = dict()
+    query = request.GET.get('query', None)
+    searchBy = request.GET.get('by', None)
+    print(query, searchBy)
+
+    if query is not None:
+        if searchBy == 'tag':
+            projects = Project.objects.filter(
+                tags__icontains=query).all() or []
+        else:
+            projects = Project.objects.filter(
+                Q(tags__icontains=query) | Q(name__icontains=query)).all() or []
+        print(projects)
+
+    return render(request, 'explore.html', {'projects': projects})
 
 
 class ProjectDetail(DetailView):
@@ -95,7 +118,8 @@ def ThreadList(request, projectId):
     project = Project.objects.get(id=projectId)
     return render(request, 'thread_list.html', context={"threads": threads, "project": project})
 
-def threadDelete(request, pk , projectId):
+
+def threadDelete(request, pk, projectId):
     try:
         Thread.objects.get(pk=pk).delete()
         messages.success(request, 'Thread Deleted Successfully')
@@ -105,26 +129,30 @@ def threadDelete(request, pk , projectId):
     except (ValueError, TypeError, OverflowError):
         messages.error(request, 'Some error occurred while deleting!')
     finally:
-        return redirect('project:thread_list',projectId=projectId)
+        return redirect('project:thread_list', projectId=projectId)
 
 
-class ThreadCreate(CreateView):  
+class ThreadCreate(CreateView):
     model = Thread
     template_name = 'thread_create.html'
     form_class = ThreadForm
+
     def get_success_url(self):
         projectId = self.kwargs['projectId']
         return reverse_lazy('project:thread_list', kwargs={'projectId': projectId})
-    
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({'reporter': self.request.user,'projectId': self.kwargs['projectId']})
+        kwargs.update({'reporter': self.request.user,
+                      'projectId': self.kwargs['projectId']})
         return kwargs
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['projectId']=self.kwargs['projectId']
+        ctx['projectId'] = self.kwargs['projectId']
         return ctx
-            
+
+
 class ThreadDetail(DetailView):
     model = Thread
     template_name = 'thread_details.html'
@@ -133,10 +161,11 @@ class ThreadDetail(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         project = Project.objects.get(id=self.kwargs['projectId'])
-        ctx['project']=project
+        ctx['project'] = project
         ctx['comments'] = list(Comment.objects.filter(
             thread__id=ctx['thread'].id).order_by('-created'))
         return ctx
+
 
 class ThreadEdit(UpdateView):
     model = Thread
@@ -150,15 +179,16 @@ class ThreadEdit(UpdateView):
         return kwargs
 
     def get_success_url(self):
-        pk= self.kwargs['pk']
-        return reverse_lazy('project:thread_details', kwargs={'pk': pk,'projectId': self.kwargs['projectId']})
+        pk = self.kwargs['pk']
+        return reverse_lazy('project:thread_details', kwargs={'pk': pk, 'projectId': self.kwargs['projectId']})
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['projectId']=self.kwargs['projectId']
+        ctx['projectId'] = self.kwargs['projectId']
         self.projectId = self.kwargs['projectId']
         ctx['pk'] = self.kwargs['pk']
         return ctx
+
 
 def CommentList(request, pk):
     comments = list(Comment.objects.filter(
@@ -166,27 +196,30 @@ def CommentList(request, pk):
     return render(request, 'comment_list.html', context={"comments": comments})
 
 
-class CommentCreate(CreateView):  
+class CommentCreate(CreateView):
     model = Comment
     template_name = 'comment_create.html'
     form_class = CommentForm
+
     def get_success_url(self):
         projectId = self.kwargs['projectId']
-        pk=self.kwargs['pk']
-        return reverse_lazy('project:thread_details', kwargs={'projectId': projectId,'pk':pk})
-    
+        pk = self.kwargs['pk']
+        return reverse_lazy('project:thread_details', kwargs={'projectId': projectId, 'pk': pk})
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({'author': self.request.user,'threadId': self.kwargs['pk']})
+        kwargs.update({'author': self.request.user,
+                      'threadId': self.kwargs['pk']})
         return kwargs
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['projectId']=self.kwargs['projectId']
-        ctx['pk']=self.kwargs['pk']
+        ctx['projectId'] = self.kwargs['projectId']
+        ctx['pk'] = self.kwargs['pk']
         return ctx
 
-def commentDelete(request, commentId, pk , projectId):
+
+def commentDelete(request, commentId, pk, projectId):
     try:
         Comment.objects.get(pk=commentId).delete()
         messages.success(request, 'Comment Deleted Successfully')
@@ -196,4 +229,4 @@ def commentDelete(request, commentId, pk , projectId):
     except (ValueError, TypeError, OverflowError):
         messages.error(request, 'Some error occurred while deleting!')
     finally:
-        return redirect('project:thread_details',projectId=projectId,pk=pk)
+        return redirect('project:thread_details', projectId=projectId, pk=pk)

@@ -29,7 +29,7 @@
       </p>
       <p class="card-text">
       {% for tag in project.tags_as_list %}
-        <a href="#" class="px-3 py-2 me-1 badge rounded-pill bg-primary text-white text-decoration-none">{{tag}}</a>
+        <a href="{% url 'project:explore' %}?query={{tag}}&by=tag" class="px-3 py-2 me-1 badge rounded-pill bg-primary text-white text-decoration-none">{{tag}}</a>
       {% endfor %}
     </p>
     </div>
