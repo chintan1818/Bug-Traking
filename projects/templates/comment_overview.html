@@ -14,8 +14,15 @@
     <p class="m-0 font-italic text-right">{{comment.created|timesince}} ago</p>
     </div>
   </div>
-  <div class="card-body">
+  <div class="d-flex justify-content-between card-body">
     <p class="card-text">{{comment.body}}</p>
+    <div>
+    {% if comment.author.id == user.id %}
+      <a href="" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Comment" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">
+        <i class="bi bi-trash-fill"></i>
+      </a>
+      {% include 'comment_delete.html' with thread=thread project=project comment=comment%}
+      {% endif %}
+      </div>
   </div>
-  
 </div>

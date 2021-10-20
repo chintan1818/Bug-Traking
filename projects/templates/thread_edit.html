@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  <title>
+    Edit - {{thread}}
+</title>
+{% endblock title %}
+
+{% block content %}
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <a href="{% url 'project:thread_details' pk=pk projectId=projectId %}" class="btn btn-dark">Cancel</a>
+    <button type="submit" class="btn">Save</button>
+  </form>
+{% endblock content %}
