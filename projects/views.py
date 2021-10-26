@@ -190,10 +190,12 @@ class ThreadEdit(UpdateView):
         return ctx
 
 
-def CommentList(request, pk):
+def CommentList(request, pk, projectId):
     comments = list(Comment.objects.filter(
         thread__id=pk).order_by('-created'))
-    return render(request, 'comment_list.html', context={"comments": comments})
+    thread: Thread = Thread.objects.get(pk=pk)
+    project = thread.project
+    return render(request, 'comment_list.html', context={"comments": comments, "project": project, "thread": thread})
 
 
 class CommentCreate(CreateView):

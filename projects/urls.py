@@ -17,8 +17,6 @@ urlpatterns = [
     path('<int:projectId>/threads', ThreadList, name='thread_list'),
     path('<int:projectId>/threads/<int:pk>',
          ThreadDetail.as_view(), name='thread_details'),
-    path('<int:projectId>/threads/<int:pk>/comments',
-         CommentList, name='comment_list'),
     path('<int:projectId>/threads/create',
          withLogin(ThreadCreate.as_view()), name='thread_create'),
     path('<int:projectId>/threads/<int:pk>/delete',

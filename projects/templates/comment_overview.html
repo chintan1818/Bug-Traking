@@ -1,28 +1,23 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <div class="mb-4 rounded shadow-sm card">
   <div
     class="card-header d-flex justify-content-between align-items-center w-100"
   >
-    <div class="align-content-md-start">
-    <span class="badge badge-primary"><h6>{{comment.author_role}}</h6></span>
-    </div>
-    <div>
-    <p class="m-0 font-italic align-content-end ">Commented by: <b>{{comment.author.first_name}} {{comment.author.last_name}}</b></p>
-    <p class="m-0 font-italic text-right">{{comment.created|timesince}} ago</p>
-    </div>
-  </div>
-  <div class="d-flex justify-content-between card-body">
-    <p class="card-text">{{comment.body}}</p>
-    <div>
-    {% if comment.author.id == user.id %}
-      <a href="" class="ms-2 p-1 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Comment" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">
-        <i class="bi bi-trash-fill"></i>
-      </a>
+    <p class="m-0 fw-bold">{{comment.author.first_name}} {{comment.author.last_name}}</p>
+    <p class="m-0 fst-italic">, {{comment.created|timesince}} ago</p>
+    <div class="ms-auto">
+      <span class="p-2 text-white badge rounded-pill bg-primary">
+        <p class="m-0">{{comment.author_role}}</p>
+      </span>
+      {% if comment.author.id == user.id %}
+        <a href="" class="p-1 ms-2 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Comment" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">
+          <i class="bi bi-trash-fill"></i>
+        </a>
       {% include 'comment_delete.html' with thread=thread project=project comment=comment%}
       {% endif %}
-      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <p class="card-text">{{comment.body}}</p>
+
   </div>
 </div>
