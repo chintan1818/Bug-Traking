@@ -1,3 +1,4 @@
+from django.http.response import Http404,  HttpResponseForbidden
 from django.shortcuts import redirect, render
 from .models import *
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
@@ -109,6 +110,12 @@ class ProjectEdit(UpdateView):
         project_id = self.kwargs['pk']
         return reverse_lazy('project:project_details', kwargs={'pk': project_id})
 
+    def dispatch(self, request, *args, **kwargs):
+        obj: Project = self.get_object()
+        if obj.manager != self.request.user:
+            return render(request, 'httpforbidden.html', {"message": "You are not allowed to edit this project"}, status=403)
+        return super().dispatch(request, *args, **kwargs)
+
 
 def ThreadList(request, projectId):
     # print("entered")
@@ -121,7 +128,11 @@ def ThreadList(request, projectId):
 
 def threadDelete(request, pk, projectId):
     try:
-        Thread.objects.get(pk=pk).delete()
+        thread: Thread = Thread.objects.get(pk=pk)
+        if thread.reporter != request.user:
+            return render(request, 'httpforbidden.html', {"message": "You are not allowed to delete this thread"}, status=403)
+        else:
+            thread.delete()
         messages.success(request, 'Thread Deleted Successfully')
     except Thread.DoesNotExist:
         messages.error(
@@ -173,6 +184,12 @@ class ThreadEdit(UpdateView):
     form_class = ThreadForm
     context_object_name = 'thread'
 
+    def dispatch(self, request, *args, **kwargs):
+        obj: Thread = self.get_object()
+        if obj.reporter != self.request.user:
+            return render(request, 'httpforbidden.html', {"message": "You are not allowed to edit this thread"}, status=403)
+        return super().dispatch(request, *args, **kwargs)
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({'projectId': self.kwargs['projectId']})
@@ -223,7 +240,11 @@ class CommentCreate(CreateView):
 
 def commentDelete(request, commentId, pk, projectId):
     try:
-        Comment.objects.get(pk=commentId).delete()
+        comment: Comment = Comment.objects.get(pk=commentId)
+        if comment.author != request.user:
+            return render(request, 'httpforbidden.html', {"message": "You are not allowed to delete this comment"}, status=403)
+        else:
+            comment.delete()
         messages.success(request, 'Comment Deleted Successfully')
     except Comment.DoesNotExist:
         messages.error(

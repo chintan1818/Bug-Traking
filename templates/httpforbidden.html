@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Forbidden</h2>
+  <h5 class="text-danger">
+    {{message}}
+  </h5>
+  <br />
+  <a href="javascript:history.go(-1)">
+    Go Back
+  </a>
+{% endblock content %}
