@@ -1,0 +1,27 @@
+.home-container {
+  background-color: #d1d1d1;
+}
+.home-container:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+.home-item {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 18px 0px;
+}
+.home-container:nth-of-type(odd) .home-item {
+  flex-direction: row-reverse;
+}
+.home-img-container {
+  padding: 32px;
+  flex: 3;
+}
+.home-img {
+  width: 100%;
+  max-height: 250px;
+}
+.home-text {
+  flex: 2;
+}

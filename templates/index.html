@@ -1,7 +1,46 @@
 {% extends 'base.html' %} 
+{% load static %}
 {% block title %}
   <title>Bug Tracker</title>
 {% endblock title %}
 {% block content %} 
-  Home 
+  <div class="home-container">
+    <div class="container">
+      <div class="home-item">
+        <div class="home-img-container">
+          <img alt="Code Inspection" src="{% static 'images/code_inspection_1.svg' %}" class="home-img" />
+        </div>
+        <div class="home-text fs-5">
+          <h4>Inspect Project</h4>
+          Manage all your project requirements at one place. Starting from creating a project to adding developers, managing project details and its threads.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="home-container">
+    <div class="container">
+      <div class="home-item">
+        <div class="home-img-container">
+          <img alt="Bug Report" src="{% static 'images/bug_report_2.svg' %}" class="home-img"/>
+        </div>
+        <div class="home-text fs-5">
+          <h4>Report Bugs </h4>
+          Bug Reports are now easy. Categorize your threads to have a clear picture. Discuss about the bug in comment section, to have a better understanding.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="home-container">
+    <div class="container">
+      <div class="home-item">
+        <div class="home-img-container">
+          <img alt="Fixing Bugs" src="{% static 'images/fixing_bugs_3.svg' %}" class="home-img"/>
+        </div>
+        <div class="home-text fs-5">
+          <h4>Fix and Track Bugs</h4>
+          Reported Bug can be tracked and categorized into various categories. Each then maybe taken by specific developer to fix or enhance it.
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
