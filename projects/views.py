@@ -186,7 +186,8 @@ class ThreadEdit(UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         obj: Thread = self.get_object()
-        if obj.reporter != self.request.user:
+        project=Project.objects.get(id=obj.project.id)
+        if obj.reporter != self.request.user and project.manager != self.request.user:
             return render(request, 'httpforbidden.html', {"message": "You are not allowed to edit this thread"}, status=403)
         return super().dispatch(request, *args, **kwargs)
 

@@ -44,11 +44,12 @@ class ThreadForm(forms.ModelForm):
     
     class Meta:
         model = Thread
-        fields = ['bug_type','title','description','bug_priority']
+        fields = ['bug_type','title','description','bug_priority','closed']
         widgets = {
             'description': forms.widgets.Textarea(attrs={'rows': 5})
         }
     BUG_TYPE_CHOICES = (('bug', 'Bug'), ('query', 'Query'))
+    closed = forms.BooleanField(initial=False,required=False)
     bug_type=forms.ChoiceField(choices=BUG_TYPE_CHOICES)
     BUG_PRIORITY_CHOICES = (
         ('critical', 'Critical'),
@@ -65,7 +66,6 @@ class ThreadForm(forms.ModelForm):
             thread.reporter = self.reporter
         project = Project.objects.get(id=self.project_id)
         thread.project=project
-        thread.closed=False
         thread.save()
 
         # To save many to many field, we have to call save_m2m

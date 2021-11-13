@@ -8,7 +8,7 @@
       <h4 class="card-text flex-fill">
         {{thread.title}}
       </h4>
-      {% if thread.reporter.id == user.id %}
+      {% if thread.reporter.id == user.id or project.manager.id == user.id %}
       <a href="{% url 'project:thread_edit' pk=thread.id projectId=project.id %}" class="p-1 ms-2 link-secondary" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
         <i class="bi bi-pencil-fill"></i>
       </a>
